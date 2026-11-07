@@ -191,6 +191,26 @@ h3{font-size:clamp(17px,1.5vw,21px);font-weight:700;margin-bottom:6px;letter-spa
 .b-card{border:1px solid #E7E9F2;border-radius:10px;padding:10px 12px}
 .b-card b{font-size:12px;display:block;margin-bottom:4px}
 .b-card.o{border-color:#F3B98A;background:#FFF6EE}
+/* Architecture */
+.arch{display:grid;grid-template-columns:1fr 44px 1.4fr 44px 1fr;align-items:stretch}
+.layer{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:16px;display:flex;flex-direction:column;gap:9px}
+.layer .lh{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--orange)}
+.layer.mid{border-color:rgba(115,129,255,.35);background:rgba(115,129,255,.05)}
+.layer.mid .lh{color:var(--indigo)}
+.layer h3{margin:0 0 2px}
+.nodebox{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--muted);line-height:1.45}
+.nodebox b{color:var(--text);display:block;font-size:14px;margin-bottom:1px}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tools span{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:6px;background:rgba(115,129,255,.12);color:#b9c1ff}
+.conn{position:relative}
+.conn::before{content:"";position:absolute;left:6px;right:6px;top:50%;height:2px;background:linear-gradient(90deg,var(--orange),var(--indigo));opacity:.55}
+.conn::after{content:"";position:absolute;right:2px;top:calc(50% - 5px);border:6px solid transparent;border-left-color:var(--indigo);border-right:0}
+.conn i{position:absolute;top:calc(50% - 4px);left:6px;width:8px;height:8px;border-radius:50%;background:var(--orange2);box-shadow:0 0 12px 3px rgba(245,146,62,.6);animation:hop 1.8s linear infinite}
+@keyframes hop{0%{left:6px;opacity:0}20%,80%{opacity:1}100%{left:calc(100% - 14px);opacity:0}}
+.conn em{position:absolute;left:50%;top:calc(50% - 26px);transform:translateX(-50%);font-style:normal;font-family:var(--mono);font-size:10px;color:var(--dim);white-space:nowrap}
+.archloop{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px;color:var(--muted);font-size:14px}
+.archloop svg{width:18px;height:18px;fill:none;stroke:var(--orange);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;animation:spin 4s linear infinite}
+@media (max-width:980px){.arch{grid-template-columns:1fr}.conn{height:34px}.conn::before{left:50%;right:auto;top:4px;bottom:4px;width:2px;height:auto}.conn::after,.conn i,.conn em{display:none}}
 /* Gallery */
 .gal{display:grid;grid-template-columns:1fr 290px;gap:18px;margin-top:16px}
 .stage{position:relative;height:calc(100vh - 280px);min-height:320px;background:#0d1122;border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:zoom-in}
@@ -623,6 +643,41 @@ h3{font-size:clamp(17px,1.5vw,21px);font-weight:700;margin-bottom:6px;letter-spa
         <div class="pipe" style="margin-top:6px"><span class="chip">Budget pacing</span><span class="chip">Revenue pacing</span><span class="chip">Portal updates</span></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- 11b · Architecture -->
+<section class="slide" data-notes="Jujur aja: aku yang bikin instruction mindmap-nya, apa yang dibutuhkan dan kenapa. Tim BAIK yang mewujudkan. Hasilnya 3 layer. Interface di Telegram, satu topic per klien. Brain: AI agent di server, dengan router topic ke folder klien, memory per klien, SOP kita sebagai instruksi, dan akses ke data source. Output di portal: file per klien, dengan access control, dan yang client-facing di-deploy ke Vercel. Detail step-by-step ada di deck how-to terpisah, nanti aku share link-nya.">
+  <div class="inner">
+    <div class="kicker r">How it was made</div>
+    <h2 class="r" style="--d:.05s">I drew the mindmap. <span class="grad">My team made it happen.</span></h2>
+    <p class="lead r" style="--d:.1s">My part: the instructions, the what and the why. The BAIK team built the how: three layers.</p>
+    <div class="arch mt">
+      <div class="layer r" style="--d:.15s">
+        <span class="lh">01 · INTERFACE</span><h3>Telegram</h3>
+        <div class="nodebox"><b>Group with Topics</b>1 topic = 1 client</div>
+        <div class="nodebox"><b>Bot as admin</b>Reads every request in plain language</div>
+        <div class="nodebox"><b>Replies in the topic</b>Status, time taken, summary, link</div>
+      </div>
+      <div class="conn r" style="--d:.3s"><em>request</em><i></i></div>
+      <div class="layer mid r" style="--d:.35s">
+        <span class="lh">02 · BRAIN</span><h3>AI agent on a server</h3>
+        <div class="nodebox"><b>Router</b>Topic ID → that client's folder</div>
+        <div class="nodebox"><b>Client memory folder</b>Brief · KPI &amp; budget · competitor watchlist · past outputs</div>
+        <div class="nodebox"><b>Agent + SOP</b>Your playbooks as instructions: report format, winning-ad rules, devil's-advocate checks
+          <div class="tools"><span>Meta Graph API</span><span>TikTok Ads</span><span>CPAS</span><span>Ads Library</span><span>IG scraper</span><span>Fathom</span></div>
+        </div>
+      </div>
+      <div class="conn r" style="--d:.5s"><em>file</em><i></i></div>
+      <div class="layer r" style="--d:.55s">
+        <span class="lh">03 · OUTPUT</span><h3>Portal</h3>
+        <div class="nodebox"><b>Files per client</b>Dated markdown, never overwritten</div>
+        <div class="nodebox"><b>Rendered pages</b>Categories, NEW / DRAFT, download</div>
+        <div class="nodebox"><b>Access control</b>Each person sees only their clients</div>
+        <div class="nodebox"><b>Client-facing</b>HTML → Vercel, one link to share</div>
+      </div>
+    </div>
+    <div class="archloop r" style="--d:.7s"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>Every output goes back into the client folder and becomes context for the next request.</div>
   </div>
 </section>
 
